@@ -1,7 +1,7 @@
 import axios, { type AxiosError, type AxiosRequestConfig, type AxiosResponse } from 'axios';
 
 import { HTTP_STATUS_CODE } from '@/config/constants';
-import { getAccessToken, logout } from '@/stores/user';
+import { logout } from '@/stores/user';
 import { isHasValue } from '@/utils/validate';
 
 type AxiosRetry = AxiosError['config'] & { _retry: boolean };
@@ -27,14 +27,10 @@ instance.interceptors.response.use(
 export const apiRequest = async <Data = unknown, Response = AxiosResponse<Data>>(
   config: AxiosRequestConfig
 ): Promise<Response> => {
-  const accessToken = await getAccessToken();
-
   return instance.request({
     ...config,
     headers: {
       Accept: 'application/json',
-      'Content-Type': 'application/json; charset=utf-8',
-      Cookies: accessToken ? JSON.stringify({ token: accessToken }) : undefined,
       ...config.headers,
     },
     withCredentials: true,
