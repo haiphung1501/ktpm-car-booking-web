@@ -1,7 +1,6 @@
 import {
   Anchor,
   Button,
-  Checkbox,
   Container,
   Group,
   Paper,
@@ -15,20 +14,21 @@ import { useMutation } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { loginApi } from '@/apis/auth';
+import { useUserStore } from '@/stores/user';
 
 type LoginForm = {
   email: string;
   password: string;
-  remember: boolean;
 };
 
 const Login = () => {
   const navigate = useNavigate();
+  const setState = useUserStore.use.setState();
+
   const form = useForm<LoginForm>({
     initialValues: {
       email: '',
       password: '',
-      remember: false,
     },
     validate: {
       email: (value) =>
@@ -37,10 +37,12 @@ const Login = () => {
     },
   });
 
-  const { mutate, isLoading } = useMutation<unknown, unknown, LoginForm>({
-    mutationFn: (data) => loginApi(data as unknown as LoginForm),
-    onSuccess: () => {
-      navigate('/');
+  const { mutate, isLoading } = useMutation({
+    mutationFn: (data: unknown) => loginApi(data as LoginForm),
+    onSuccess: (data) => {
+      if (!data) throw new Error();
+      setState({ accessToken: data.token, user: data.user, status: 'authorized' });
+      navigate('/admin');
     },
     onError: () => {
       form.setErrors({
@@ -82,7 +84,6 @@ const Login = () => {
             {...form.getInputProps('password')}
           />
           <Group position="apart" mt="lg">
-            <Checkbox label="Remember me" {...form.getInputProps('remember')} />
             <Link to="/admin/forgot-password">
               <Anchor component="button" size="sm">
                 Forgot password?

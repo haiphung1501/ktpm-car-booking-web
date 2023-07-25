@@ -7,6 +7,13 @@ import { router } from './config/router.jsx';
 
 import './styles/global.css';
 
+import { createEmotionCache, MantineProvider } from '@mantine/core';
+
+const myCache = createEmotionCache({
+  key: 'mantine',
+  prepend: false,
+});
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -17,8 +24,10 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <MantineProvider emotionCache={myCache}>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </MantineProvider>
   </React.StrictMode>
 );

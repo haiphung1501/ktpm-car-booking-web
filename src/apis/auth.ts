@@ -1,40 +1,46 @@
 import { setAccessToken } from '@/stores/user';
+import type { User } from '@/types/user';
+import { API_URL } from '@/utils/env';
+import { apiPost } from './api';
 
-type TokenReponse = {
-  accessToken: string;
-  refreshToken: string;
+const AUTH_URL = {
+  login: API_URL + '/api/user/login',
+  logout: API_URL + '/api/user/logout',
 };
 
 type LoginApiParam = {
   email: string;
   password: string;
-  remember: boolean;
+};
+
+type LoginApiResponse = {
+  success: boolean;
+  user: User;
+  token: string;
 };
 
 export const loginApi = async (data: LoginApiParam) => {
   try {
-    return new Promise((resolve) => {
-      if (data.email !== 'test@gmail.com') throw new Error('');
-      const res = { accessToken: 'abc', refreshToken: 'abc', user: { id: 1, ...data } };
-
-      if (data.remember) {
-        localStorage.setItem('refreshToken', res.refreshToken);
-      }
-      setAccessToken(res.accessToken);
-
-      setTimeout(() => resolve(res), 200);
-    });
+    const res = await apiPost<LoginApiParam, ApiDataResponse<LoginApiResponse>>(
+      AUTH_URL.login,
+      data
+    );
+    setAccessToken(res.data.token);
+    return res.data;
   } catch {
     return null;
   }
 };
 
-export const refreshTokenApi = async (token: string): Promise<TokenReponse | null> => {
+type LogoutApiResponse = {
+  success: boolean;
+  message: string;
+};
+
+export const logoutApi = async (): Promise<LogoutApiResponse | null> => {
   try {
-    return new Promise((resolve) => {
-      const res = { accessToken: token + 'bcd', refreshToken: 'bcd' };
-      setTimeout(() => resolve(res), 200);
-    });
+    const res = await apiPost<null, ApiDataResponse<LogoutApiResponse>>(AUTH_URL.logout);
+    return res.data;
   } catch {
     return null;
   }

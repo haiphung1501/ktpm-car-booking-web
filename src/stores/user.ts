@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 
-import { UserProfile } from '@/types/user';
+import { User } from '@/types/user';
 import { createSelectors } from './createSelectors';
 
 export type AuthStatus = 'unauthorized' | 'authorized';
 
 type State = {
-  user: UserProfile | null;
+  user: User | null;
   status: AuthStatus;
   accessToken: string;
 };
@@ -36,7 +36,7 @@ export const useUserStore = createSelectors(
 );
 
 export const getAccessToken = () => {
-  const token = useUserStore.use.accessToken();
+  const token = useUserStore.getState().accessToken;
   if (!token) {
     return localStorage.getItem('accessToken');
   }
@@ -45,4 +45,9 @@ export const getAccessToken = () => {
 
 export const setAccessToken = (token: string) => {
   localStorage.setItem('accessToken', token);
+};
+
+export const logout = () => {
+  const reset = useUserStore.getState().reset;
+  reset();
 };
