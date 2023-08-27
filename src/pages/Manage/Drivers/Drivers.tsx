@@ -1,13 +1,22 @@
 import { Anchor, LoadingOverlay, ScrollArea, Table } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 
 import { getAllUser } from '@/apis/user';
+import { useCustomerStore } from '@/stores/customer';
 import { classNames } from '@/utils/classNames';
 
 const Drivers = () => {
+  const setDrivers = useCustomerStore.use.setDrivers();
+
   const { isLoading, data } = useQuery({
     queryKey: ['getAllUser'],
-    queryFn: () => getAllUser({ role: 'driver' }),
+    queryFn: () => {
+      return getAllUser({ role: 'driver' }).then((res) => {
+        setDrivers(res?.users || []);
+        return res;
+      });
+    },
   });
 
   return (
@@ -30,9 +39,11 @@ const Drivers = () => {
           {data?.users.map((user) => (
             <tr key={user._id}>
               <td>
-                <Anchor component="button" fz="sm">
-                  {user._id}
-                </Anchor>
+                <Link to={`/admin/profile/${user._id}`}>
+                  <Anchor component="button" fz="sm">
+                    {user._id}
+                  </Anchor>
+                </Link>
               </td>
               <td>{user.email}</td>
               <td>{user.address}</td>

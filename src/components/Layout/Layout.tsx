@@ -1,6 +1,5 @@
 import { type ReactNode } from 'react';
-import { ActionIcon, Button, TextInput } from '@mantine/core';
-import { IconBellFilled, IconSearch, IconSettings } from '@tabler/icons-react';
+import { useLocation } from 'react-router-dom';
 
 import { Sidebar } from './Sidebar';
 
@@ -9,22 +8,32 @@ type Props = {
 };
 
 const Layout = ({ children }: Props) => {
+  const location = useLocation();
+
+  const title = () => {
+    switch (location.pathname) {
+      case '/admin/users': {
+        return 'User List';
+      }
+      case '/admin/orders': {
+        return 'Orders List';
+      }
+      case '/admin/drivers': {
+        return 'Driver List';
+      }
+      default: {
+        if (location.pathname.startsWith('/admin/profile')) return 'Profile';
+        if (location.pathname.startsWith('/admin/booking')) return 'Booking details';
+        return 'Dashboard';
+      }
+    }
+  };
+
   return (
     <div className="flex h-screen">
       <Sidebar />
       <div className="w-full overflow-y-auto">
-        <div className="flex items-center gap-2 border-b px-4 py-3">
-          <TextInput placeholder="Search" icon={<IconSearch />} />
-          <Button variant="filled" color="cyan" className="ml-1 mr-auto">
-            Search
-          </Button>
-          <ActionIcon size="lg" variant="subtle" color="yellow">
-            <IconBellFilled size="1.5rem" />
-          </ActionIcon>
-          <ActionIcon size="lg" variant="light">
-            <IconSettings size="1.125rem" />
-          </ActionIcon>
-        </div>
+        <div className="flex items-center gap-2 border-b px-4 py-3">{title()}</div>
         {children}
       </div>
     </div>

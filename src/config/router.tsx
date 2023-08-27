@@ -1,15 +1,18 @@
-import { createBrowserRouter, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 import { Layout } from '@/components/Layout';
+import { Account } from '@/pages/Account';
 import { Dashboard } from '@/pages/Dashboard';
 import { ForgotPassword } from '@/pages/ForgotPassword';
+import { LandingPage } from '@/pages/LandingPage';
 import { Login } from '@/pages/Login';
 import { Drivers } from '@/pages/Manage/Drivers';
-import { Orders } from '@/pages/Manage/Orders';
+import { Booking, Orders } from '@/pages/Manage/Orders';
 import { Requests } from '@/pages/Manage/Requests';
 import { Users } from '@/pages/Manage/Users';
+import { Profile } from '@/pages/Profile';
 
-export const router = createBrowserRouter([
+export const router = [
   {
     path: '/admin',
     element: <Outlet />,
@@ -41,6 +44,14 @@ export const router = createBrowserRouter([
         element: <Dashboard />,
       },
       {
+        path: 'profile/:id',
+        element: <Profile />,
+      },
+      {
+        path: 'booking/:id',
+        element: <Booking />,
+      },
+      {
         path: 'users',
         element: <Users />,
       },
@@ -58,7 +69,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'account',
-        element: <></>,
+        element: <Account />,
       },
       {
         path: 'config',
@@ -66,4 +77,8 @@ export const router = createBrowserRouter([
       },
     ],
   },
-]);
+  {
+    path: '/',
+    element: <LandingPage />,
+  },
+];

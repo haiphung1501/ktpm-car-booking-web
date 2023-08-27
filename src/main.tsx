@@ -1,13 +1,13 @@
 import React from 'react';
+import { createEmotionCache, MantineProvider } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import ReactDOM from 'react-dom/client';
-import { RouterProvider } from 'react-router-dom';
-
-import { router } from './config/router.jsx';
+import { BrowserRouter } from 'react-router-dom';
 
 import './styles/global.css';
 
-import { createEmotionCache, MantineProvider } from '@mantine/core';
+import { AuthenticationLayout } from './components/AuthenticationLayout';
 
 const myCache = createEmotionCache({
   key: 'mantine',
@@ -24,10 +24,13 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <MantineProvider emotionCache={myCache}>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
-    </MantineProvider>
+    <BrowserRouter>
+      <MantineProvider emotionCache={myCache}>
+        <QueryClientProvider client={queryClient}>
+          <AuthenticationLayout />
+          <Notifications />
+        </QueryClientProvider>
+      </MantineProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );

@@ -41,7 +41,7 @@ const Login = () => {
     mutationFn: (data: unknown) => loginApi(data as LoginForm),
     onSuccess: (data) => {
       if (!data) throw new Error();
-      setState({ accessToken: data.token, user: data.user, status: 'authorized' });
+      setState({ user: data.user, status: 'authorized' });
       navigate('/admin');
     },
     onError: () => {

@@ -1,11 +1,5 @@
 import { Group, Navbar, ScrollArea, Text } from '@mantine/core';
-import {
-  IconAdjustments,
-  IconGauge,
-  IconNotes,
-  IconPresentationAnalytics,
-  IconUser,
-} from '@tabler/icons-react';
+import { IconGauge, IconNotes, IconUser } from '@tabler/icons-react';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,27 +18,15 @@ const mockdata = [
       { label: 'Users', link: '/admin/users' },
       { label: 'Drivers', link: '/admin/drivers' },
       { label: 'Orders', link: '/admin/orders' },
-      { label: 'Requests', link: '/admin/requests' },
     ],
   },
-  {
-    label: 'Analytics',
-    links: [
-      { label: 'Overview', link: '/' },
-      { label: 'Outcome', link: '/' },
-      { label: 'Tracking', link: '/' },
-    ],
-    icon: IconPresentationAnalytics,
-  },
-  { label: 'Account', icon: IconUser },
-  { label: 'Config', icon: IconAdjustments },
+  { label: 'Account', icon: IconUser, link: '/admin/account' },
 ];
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
   const user = useUserStore.use.user();
-  console.log(user);
 
   const { mutate, isLoading } = useMutation({
     mutationFn: () => logoutApi(),

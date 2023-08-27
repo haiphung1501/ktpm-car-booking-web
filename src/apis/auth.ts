@@ -1,4 +1,3 @@
-import { setAccessToken } from '@/stores/user';
 import type { User } from '@/types/user';
 import { API_URL } from '@/utils/env';
 import { apiPost } from './api';
@@ -25,7 +24,6 @@ export const loginApi = async (data: LoginApiParam) => {
       AUTH_URL.login,
       data
     );
-    setAccessToken(res.data.token);
     return res.data;
   } catch {
     return null;
