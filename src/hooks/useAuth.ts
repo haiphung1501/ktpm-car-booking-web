@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ const useAuth = () => {
   const user = useUserStore.use.user();
   const { data, isLoading } = useQuery({ queryFn: getUserProfile });
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setState({ status: isLoading ? 'unauthorized' : 'authorized', user: data?.user || null });
   }, [data?.user, isLoading, setState]);
 

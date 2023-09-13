@@ -1,5 +1,5 @@
 import { Group, Navbar, ScrollArea, Text } from '@mantine/core';
-import { IconGauge, IconNotes, IconUser } from '@tabler/icons-react';
+import { IconGauge, IconNotes, IconReceipt, IconUser } from '@tabler/icons-react';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,6 +21,7 @@ const mockdata = [
     ],
   },
   { label: 'Account', icon: IconUser, link: '/admin/account' },
+  { label: 'Support Booking', icon: IconReceipt, link: '/admin/support-booking' },
 ];
 
 const Sidebar = () => {

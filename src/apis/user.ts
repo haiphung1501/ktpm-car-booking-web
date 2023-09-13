@@ -9,6 +9,7 @@ const USER_URL = {
   updatePassword: API_URL + '/api/user/updatepassword',
   getUserById: API_URL + '/api/user',
   deleteUser: API_URL + '/api/user/delete',
+  register: API_URL + '/api/user/register',
 };
 
 type GetAllUserParam = {
@@ -80,5 +81,10 @@ export const updatePassword = async (data: UpdatePasswordParams) => {
 
 export const deleteUser = async (id: string) => {
   const res = await apiPut(USER_URL.deleteUser + `/${id}`);
+  return res.data;
+};
+
+export const registerUser = async (data: { email: string; password: string }) => {
+  const res = await apiPost(USER_URL.register, data);
   return res.data;
 };

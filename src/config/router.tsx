@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 
 import { Layout } from '@/components/Layout';
 import { Account } from '@/pages/Account';
+import { Booking as SupportBooking } from '@/pages/Booking';
 import { Dashboard } from '@/pages/Dashboard';
 import { ForgotPassword } from '@/pages/ForgotPassword';
 import { LandingPage } from '@/pages/LandingPage';
@@ -70,6 +71,10 @@ export const router = [
       {
         path: 'account',
         element: <Account />,
+      },
+      {
+        path: 'support-booking',
+        element: <SupportBooking />,
       },
       {
         path: 'config',
